@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santiago Bolívar Ávila, Ph.D. — Computational Chemistry &amp; In Silico Drug Discovery</title>
+  <meta name="description" content="Academic & open-source portfolio of Santiago Bolívar Ávila, Ph.D. — In silico drug discovery, QSAR, molecular docking, GROMACS MD simulations, and natural products chemistry." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://3dmol.org/build/3Dmol-min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#top" class="brand">
+        <span class="brand-mark">SB</span>
+        <span class="brand-text">Santiago Bolívar Ávila, <span class="serif-italic">Ph.D.</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#pipeline" data-i18n="nav_pipeline">Pipeline</a>
+        <a href="#repositories" data-i18n="nav_repos">Tools &amp; Repos</a>
+        <a href="#publications" data-i18n="nav_pubs">Publications</a>
+        <a href="#education" data-i18n="nav_academic">Academic CV</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="langToggle" class="icon-btn" type="button" title="Switch language">ES</button>
+        <button id="themeToggle" class="icon-btn" type="button" title="Toggle theme" aria-label="Toggle color theme">☀</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero + Live 3D Molecular Explorer -->
+    <section class="hero container">
+      <div class="hero-copy">
+        <div class="eyebrow">
+          <span class="pulse-dot"></span>
+          <span data-i18n="hero_eyebrow">COMPUTATIONAL CHEMISTRY · IN SILICO DRUG DISCOVERY</span>
+        </div>
+        <h1>
+          <span data-i18n="hero_title_1">Bridging</span>
+          <span class="serif-italic gradient-text" data-i18n="hero_title_accent">Natural Products</span>
+          <span data-i18n="hero_title_2">&amp; Reproducible Drug Design</span>
+        </h1>
+        <p class="hero-desc" data-i18n="hero_desc">
+          Chemist with a Ph.D. in Chemical Sciences (Universidad Nacional de Rosario) and an M.Sc. in Pharmaceutical Sciences.
+          I build open-source pipelines combining <strong>QSAR modeling</strong>, <strong>multi-engine molecular docking</strong>,
+          <strong>GROMACS MD preparation</strong>, and <strong>free energy analysis</strong>.
+        </p>
+
+        <div class="hero-cta">
+          <a href="#repositories" class="btn btn-primary" data-i18n="cta_explore">Explore Open-Source Tools</a>
+          <a href="#publications" class="btn btn-ghost" data-i18n="cta_pubs">View Publications</a>
+        </div>
+
+        <div class="identity-strip">
+          <a href="https://orcid.org/0000-0002-3772-7604" target="_blank" rel="noopener" class="id-pill">
+            <span class="dot dot-orcid"></span> ORCID 0000-0002-3772-7604
+          </a>
+          <a href="https://www.researchgate.net/profile/Santiago-Bolivar-Avila" target="_blank" rel="noopener" class="id-pill">
+            <span class="dot dot-rg"></span> ResearchGate
+          </a>
+          <a href="https://www.linkedin.com/in/santiago-bolivar-a-07b3b2143/" target="_blank" rel="noopener" class="id-pill">
+            <span class="dot dot-li"></span> LinkedIn
+          </a>
+          <a href="https://github.com/Sbolivar16" target="_blank" rel="noopener" class="id-pill">
+            <span class="dot dot-gh"></span> GitHub
+          </a>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi">
+            <span class="kpi-val" id="statStars">55+</span>
+            <span class="kpi-lbl" data-i18n="kpi_stars">GitHub Stars</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-val" id="statForks">20+</span>
+            <span class="kpi-lbl" data-i18n="kpi_forks">Community Forks</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-val">5</span>
+            <span class="kpi-lbl" data-i18n="kpi_papers">Peer-Reviewed Papers</span>
+          </div>
+          <div class="kpi">
+            <span class="kpi-val">1 DOI</span>
+            <span class="kpi-lbl" data-i18n="kpi_zenodo">Zenodo Software</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive 3Dmol.js Protein-Ligand Viewer -->
+      <div class="viewer-card">
+        <div class="viewer-header">
+          <div>
+            <span class="viewer-kicker" data-i18n="viewer_kicker">LIVE 3D PROTEIN–LIGAND EXPLORER</span>
+            <h2 class="viewer-title" id="pdbTitle">PDB: 2FOM · Dengue NS2B-NS3 Protease</h2>
+          </div>
+          <span class="viewer-badge">3Dmol.js</span>
+        </div>
+
+        <div id="molViewer" class="mol-canvas" aria-label="Interactive 3D molecular structure viewer">
+          <div id="viewerStatus" class="viewer-status">Loading 3D crystal structure from RCSB PDB…</div>
+        </div>
+
+        <div class="viewer-controls">
+          <div class="control-group">
+            <button class="chip active" data-pdb="2FOM" data-name="PDB: 2FOM · Dengue NS2B-NS3 Protease">2FOM (Dengue)</button>
+            <button class="chip" data-pdb="6LU7" data-name="PDB: 6LU7 · SARS-CoV-2 Main Protease">6LU7 (SARS-CoV-2)</button>
+            <button class="chip" data-pdb="1HSG" data-name="PDB: 1HSG · HIV-1 Protease + Indinavir">1HSG (HIV-1)</button>
+          </div>
+          <div class="control-group">
+            <button class="chip-outline" id="styleBtn" data-i18n="btn_style">Style: Cartoon</button>
+            <button class="chip-outline" id="spinBtn" data-i18n="btn_spin">Spin: On</button>
+            <button class="chip-outline" id="resetBtn" data-i18n="btn_reset">Reset</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive 5-Stage In Silico Pipeline -->
+    <section id="pipeline" class="section container">
+      <div class="section-head">
+        <span class="section-kicker" data-i18n="pipe_kicker">INTERACTIVE METHODOLOGY</span>
+        <h2 class="section-title" data-i18n="pipe_title">End-to-End <em>In Silico</em> Drug Discovery Pipeline</h2>
+        <p class="section-sub" data-i18n="pipe_sub">Click any stage below to inspect the computational workflow, validation methods, and open-source repository.</p>
+      </div>
+
+      <div class="pipeline-track" role="tablist" aria-label="Drug discovery pipeline stages">
+        <button class="stage-tab active" data-stage="0" role="tab" aria-selected="true">
+          <span class="stage-num">01</span>
+          <span class="stage-name" data-i18n="st_0_name">Chemical Space</span>
+          <span class="stage-repo">-cheminformatics</span>
+        </button>
+        <button class="stage-tab" data-stage="1" role="tab" aria-selected="false">
+          <span class="stage-num">02</span>
+          <span class="stage-name" data-i18n="st_1_name">QSAR &amp; ADMET</span>
+          <span class="stage-repo">QSAR_Tools</span>
+        </button>
+        <button class="stage-tab" data-stage="2" role="tab" aria-selected="false">
+          <span class="stage-num">03</span>
+          <span class="stage-name" data-i18n="st_2_name">Molecular Docking</span>
+          <span class="stage-repo">MolecularDocking</span>
+        </button>
+        <button class="stage-tab" data-stage="3" role="tab" aria-selected="false">
+          <span class="stage-num">04</span>
+          <span class="stage-name" data-i18n="st_3_name">MD System Prep</span>
+          <span class="stage-repo">MD-Prep-Studio</span>
+        </button>
+        <button class="stage-tab" data-stage="4" role="tab" aria-selected="false">
+          <span class="stage-num">05</span>
+          <span class="stage-name" data-i18n="st_4_name">MD &amp; MM/PBSA</span>
+          <span class="stage-repo">Gromacs-Tools</span>
+        </button>
+      </div>
+
+      <div id="stageDetail" class="stage-detail-card"></div>
+    </section>
+
+    <!-- Repositories & 1-Click Colab Launchpad -->
+    <section id="repositories" class="section container">
+      <div class="section-head row-between">
+        <div>
+          <span class="section-kicker" data-i18n="repo_kicker">OPEN-SOURCE SOFTWARE &amp; NOTEBOOKS</span>
+          <h2 class="section-title" data-i18n="repo_title">Repositories &amp; 1-Click Colab Launchpad</h2>
+        </div>
+        <div class="filter-bar" id="repoFilters">
+          <button class="filter-btn active" data-filter="all" data-i18n="f_all">All</button>
+          <button class="filter-btn" data-filter="docking">Docking</button>
+          <button class="filter-btn" data-filter="md">Molecular Dynamics</button>
+          <button class="filter-btn" data-filter="qsar">QSAR &amp; ADMET</button>
+          <button class="filter-btn" data-filter="chem">Cheminformatics</button>
+        </div>
+      </div>
+
+      <div id="repoGrid" class="repo-grid"></div>
+    </section>
+
+    <!-- Peer-Reviewed Publications -->
+    <section id="publications" class="section container">
+      <div class="section-head row-between">
+        <div>
+          <span class="section-kicker" data-i18n="pub_kicker">ORCID VERIFIED RECORD · 0000-0002-3772-7604</span>
+          <h2 class="section-title" data-i18n="pub_title">Peer-Reviewed Publications</h2>
+        </div>
+        <div class="filter-bar" id="pubFilters">
+          <button class="filter-btn active" data-pub="all" data-i18n="f_all">All (5)</button>
+          <button class="filter-btn" data-pub="computational" data-i18n="f_comp">In Silico Drug Discovery</button>
+          <button class="filter-btn" data-pub="synthesis" data-i18n="f_synth">Natural Products &amp; Synthesis</button>
+        </div>
+      </div>
+
+      <div id="pubList" class="pub-list"></div>
+    </section>
+
+    <!-- Academic Trajectory & Contact -->
+    <section id="education" class="section container">
+      <div class="two-col">
+        <div class="card">
+          <span class="section-kicker" data-i18n="edu_kicker">ACADEMIC BACKGROUND</span>
+          <h2 class="card-heading" data-i18n="edu_title">Education &amp; Research Formation</h2>
+          <div class="timeline">
+            <div class="tl-item">
+              <span class="tl-year">2018 – 2024</span>
+              <h3>Ph.D. in Chemical Sciences</h3>
+              <p class="tl-inst">Universidad Nacional de Rosario (UNR), Argentina</p>
+              <p class="tl-note" data-i18n="edu_phd">Doctoral research in organic synthesis of natural products from plant &amp; marine sources, expanding into computational drug design.</p>
+            </div>
+            <div class="tl-item">
+              <span class="tl-year">2015 – 2017</span>
+              <h3>M.Sc. in Pharmaceutical Sciences</h3>
+              <p class="tl-inst">Universidad de Cartagena, Colombia</p>
+              <p class="tl-note" data-i18n="edu_msc">Isolation, characterization, and antiviral evaluation of natural compounds against Dengue &amp; Chikungunya viruses.</p>
+            </div>
+            <div class="tl-item">
+              <span class="tl-year">2008 – 2014</span>
+              <h3>B.Sc. in Chemistry</h3>
+              <p class="tl-inst">Universidad del Atlántico, Barranquilla, Colombia</p>
+              <p class="tl-note" data-i18n="edu_bsc">Foundations in organic, analytical, and chromatographic chemistry.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="section-kicker" data-i18n="contact_kicker">COLLABORATION &amp; CONTACT</span>
+          <h2 class="card-heading" data-i18n="contact_title">Let's Collaborate on Research</h2>
+          <p class="card-text" data-i18n="contact_desc">
+            Open to academic collaborations, natural product virtual screening projects, molecular dynamics consulting, and reproducible cheminformatics tooling.
+          </p>
+
+          <div class="contact-links">
+            <div class="contact-row">
+              <div>
+                <span class="contact-label">Email</span>
+                <span class="contact-val">sbolivar16@outlook.com</span>
+              </div>
+              <button class="chip-outline" id="copyEmailBtn" type="button" data-i18n="btn_copy">Copy</button>
+            </div>
+            <a class="contact-row link-row" href="https://orcid.org/0000-0002-3772-7604" target="_blank" rel="noopener">
+              <div>
+                <span class="contact-label">ORCID</span>
+                <span class="contact-val">0000-0002-3772-7604</span>
+              </div>
+              <span>↗</span>
+            </a>
+            <a class="contact-row link-row" href="https://www.researchgate.net/profile/Santiago-Bolivar-Avila" target="_blank" rel="noopener">
+              <div>
+                <span class="contact-label">ResearchGate</span>
+                <span class="contact-val">Santiago-Bolivar-Avila</span>
+              </div>
+              <span>↗</span>
+            </a>
+            <a class="contact-row link-row" href="https://www.linkedin.com/in/santiago-bolivar-a-07b3b2143/" target="_blank" rel="noopener">
+              <div>
+                <span class="contact-label">LinkedIn</span>
+                <span class="contact-val">Santiago Bolívar Ávila, Ph.D.</span>
+              </div>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 Santiago Bolívar Ávila, Ph.D. · Barranquilla, Colombia</span>
+      <a href="https://github.com/Sbolivar16" target="_blank" rel="noopener">github.com/Sbolivar16</a>
+    </div>
+  </footer>
+
+  <!-- BibTeX Modal -->
+  <div id="bibModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="bibTitle">
+    <div class="modal-backdrop" id="bibBackdrop"></div>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="bibTitle">BibTeX Citation</h3>
+        <button id="bibClose" class="icon-btn" type="button" aria-label="Close modal">✕</button>
+      </div>
+      <pre id="bibContent" class="bib-code"></pre>
+      <div class="modal-actions">
+        <button id="bibCopy" class="btn btn-primary" type="button" data-i18n="btn_copy_bib">Copy BibTeX</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
