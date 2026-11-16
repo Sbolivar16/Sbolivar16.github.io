@@ -288,6 +288,35 @@ body {
 .contact-label { display: block; font-size: 0.74rem; color: var(--text-muted); font-weight: 600; }
 .contact-val { font-weight: 700; font-size: 0.92rem; }
 
+/* Collaboration Form */
+.collab-box { margin-top: 1.25rem; border-color: var(--border-accent); }
+.hp-field { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.95rem; }
+.form-full { grid-column: 1 / -1; }
+.form-field { display: flex; flex-direction: column; gap: 0.38rem; }
+.form-field span { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%; padding: 0.75rem 0.9rem; border-radius: 12px;
+  border: 1px solid var(--border); background: var(--bg-elev); color: var(--text);
+  font-family: inherit; font-size: 0.92rem; transition: border-color .2s, box-shadow .2s;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.16);
+}
+.form-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 1rem; }
+.form-status {
+  margin-top: 0.9rem; padding: 0.85rem 1rem; border-radius: 12px;
+  font-size: 0.88rem; font-weight: 600; border: 1px solid var(--border);
+}
+.form-status.hidden { display: none; }
+.form-status.success { background: rgba(45, 212, 191, 0.12); border-color: rgba(45, 212, 191, 0.45); color: var(--accent); }
+.form-status.error { background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.45); color: #fb7185; }
+
 .footer { border-top: 1px solid var(--border); padding: 1.8rem 0; margin-top: 2rem; color: var(--text-muted); font-size: 0.88rem; }
 .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
 .footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
@@ -316,5 +345,5 @@ body {
   .nav-links { display: none; }
 }
 @media (max-width: 600px) {
-  .pipeline-track, .repo-grid, .kpi-row { grid-template-columns: 1fr; }
+  .pipeline-track, .repo-grid, .kpi-row, .form-grid { grid-template-columns: 1fr; }
 }

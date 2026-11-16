@@ -29,6 +29,7 @@
         <a href="#repositories" data-i18n="nav_repos">Tools &amp; Repos</a>
         <a href="#publications" data-i18n="nav_pubs">Publications</a>
         <a href="#education" data-i18n="nav_academic">Academic CV</a>
+        <a href="#contact" data-i18n="nav_contact">Collaborate</a>
       </nav>
       <div class="nav-actions">
         <button id="langToggle" class="icon-btn" type="button" title="Switch language">ES</button>
@@ -239,7 +240,7 @@
             <div class="contact-row">
               <div>
                 <span class="contact-label">Email</span>
-                <span class="contact-val">sbolivar16@outlook.com</span>
+                <span class="contact-val">sbolivaravila16@gmail.com</span>
               </div>
               <button class="chip-outline" id="copyEmailBtn" type="button" data-i18n="btn_copy">Copy</button>
             </div>
@@ -266,6 +267,50 @@
             </a>
           </div>
         </div>
+      </div>
+
+      <!-- Direct Collaboration Form -->
+      <div id="contact" class="card collab-box">
+        <div class="collab-head">
+          <div>
+            <span class="section-kicker" data-i18n="collab_kicker">DIRECT RESEARCH INQUIRY</span>
+            <h2 class="card-heading" data-i18n="collab_title">Contact Me for Collaborations</h2>
+            <p class="card-text" data-i18n="collab_sub">Send a proposal or question directly to <strong>sbolivaravila16@gmail.com</strong> — I typically reply within 24–48 hours.</p>
+          </div>
+        </div>
+
+        <form id="collabForm" class="collab-form">
+          <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="form-grid">
+            <label class="form-field">
+              <span data-i18n="lbl_name">Your Name</span>
+              <input type="text" name="name" id="collabName" required placeholder="Dr. Jane Doe / Institution" />
+            </label>
+            <label class="form-field">
+              <span data-i18n="lbl_email">Your Email</span>
+              <input type="email" name="email" id="collabEmail" required placeholder="researcher@university.edu" />
+            </label>
+            <label class="form-field form-full">
+              <span data-i18n="lbl_topic">Collaboration Area</span>
+              <select name="topic" id="collabTopic">
+                <option value="Molecular Docking & Virtual Screening">Molecular Docking &amp; Virtual Screening</option>
+                <option value="QSAR, ADMET & Cheminformatics">QSAR, ADMET &amp; Cheminformatics</option>
+                <option value="GROMACS Molecular Dynamics & MM/PBSA">GROMACS Molecular Dynamics &amp; MM/PBSA</option>
+                <option value="Natural Products & Drug Discovery Research">Natural Products &amp; Drug Discovery Research</option>
+                <option value="Other Academic / Consulting Inquiry">Other Academic / Consulting Inquiry</option>
+              </select>
+            </label>
+            <label class="form-field form-full">
+              <span data-i18n="lbl_msg">Collaboration Message</span>
+              <textarea name="message" id="collabMessage" rows="4" required placeholder="Briefly describe your target, project scope, or collaboration idea..."></textarea>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" id="collabSubmitBtn" class="btn btn-primary" data-i18n="btn_send">Send Message →</button>
+            <a id="mailtoFallback" class="btn btn-ghost" href="mailto:sbolivaravila16@gmail.com?subject=Research%20Collaboration%20Inquiry" data-i18n="btn_mailto">Open Email App</a>
+          </div>
+          <div id="formStatus" class="form-status hidden" role="status" aria-live="polite"></div>
+        </form>
       </div>
     </section>
   </main>

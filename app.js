@@ -4,6 +4,7 @@ const I18N = {
     nav_repos: "Tools & Repos",
     nav_pubs: "Publications",
     nav_academic: "Academic CV",
+    nav_contact: "Collaborate",
     hero_eyebrow: "COMPUTATIONAL CHEMISTRY · IN SILICO DRUG DISCOVERY",
     hero_title_1: "Bridging",
     hero_title_accent: "Natural Products",
@@ -45,12 +46,28 @@ const I18N = {
     contact_desc: "Open to academic collaborations, natural product virtual screening projects, molecular dynamics consulting, and reproducible cheminformatics tooling.",
     btn_copy: "Copy",
     btn_copy_bib: "Copy BibTeX",
+    collab_kicker: "DIRECT RESEARCH INQUIRY",
+    collab_title: "Contact Me for Collaborations",
+    collab_sub: "Send a proposal or question directly to <strong>sbolivaravila16@gmail.com</strong> — I typically reply within 24–48 hours.",
+    lbl_name: "Your Name",
+    lbl_email: "Your Email",
+    lbl_topic: "Collaboration Area",
+    lbl_msg: "Collaboration Message",
+    btn_send: "Send Message →",
+    btn_mailto: "Open Email App",
+    ph_name: "Dr. Jane Doe / Institution",
+    ph_email: "researcher@university.edu",
+    ph_msg: "Briefly describe your target, project scope, or collaboration idea...",
+    sending: "Sending message…",
+    sent_ok: "Message sent directly to sbolivaravila16@gmail.com! Thank you for reaching out.",
+    sent_err: "Could not submit automatically (network or blocker). Please click 'Open Email App' to send directly.",
   },
   es: {
     nav_pipeline: "Pipeline",
     nav_repos: "Herramientas",
     nav_pubs: "Publicaciones",
     nav_academic: "Trayectoria",
+    nav_contact: "Colaborar",
     hero_eyebrow: "QUÍMICA COMPUTACIONAL · DISEÑO DE FÁRMACOS IN SILICO",
     hero_title_1: "Conectando",
     hero_title_accent: "Productos Naturales",
@@ -92,6 +109,21 @@ const I18N = {
     contact_desc: "Disponible para colaboraciones académicas, cribado virtual de productos naturales, simulaciones de dinámica molecular y desarrollo en quimioinformática.",
     btn_copy: "Copiar",
     btn_copy_bib: "Copiar BibTeX",
+    collab_kicker: "CONTACTO DIRECTO PARA INVESTIGACIÓN",
+    collab_title: "Contáctame para colaboraciones",
+    collab_sub: "Envía tu propuesta o consulta directamente a <strong>sbolivaravila16@gmail.com</strong> — normalmente respondo en 24–48 horas.",
+    lbl_name: "Tu Nombre",
+    lbl_email: "Tu Correo",
+    lbl_topic: "Área de Colaboración",
+    lbl_msg: "Mensaje o Propuesta",
+    btn_send: "Enviar Mensaje →",
+    btn_mailto: "Abrir App de Correo",
+    ph_name: "Dr./Dra. Nombre / Institución",
+    ph_email: "investigador@universidad.edu",
+    ph_msg: "Describe brevemente tu diana molecular, proyecto o idea de colaboración...",
+    sending: "Enviando mensaje…",
+    sent_ok: "¡Mensaje enviado directamente a sbolivaravila16@gmail.com! Gracias por escribir.",
+    sent_err: "No se pudo enviar automáticamente (red o bloqueador). Haz clic en 'Abrir App de Correo' para enviarlo.",
   },
 };
 
@@ -264,6 +296,12 @@ function applyI18n() {
     if (dict[key]) el.innerHTML = dict[key];
   });
   document.getElementById("langToggle").textContent = lang === "en" ? "ES" : "EN";
+  const nameEl = document.getElementById("collabName");
+  const emailEl = document.getElementById("collabEmail");
+  const msgEl = document.getElementById("collabMessage");
+  if (nameEl) nameEl.placeholder = dict.ph_name;
+  if (emailEl) emailEl.placeholder = dict.ph_email;
+  if (msgEl) msgEl.placeholder = dict.ph_msg;
   renderStageDetail();
   renderRepos();
   renderPubs();
@@ -492,10 +530,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Copy email
   document.getElementById("copyEmailBtn").addEventListener("click", async (e) => {
-    await navigator.clipboard.writeText("sbolivar16@outlook.com");
+    await navigator.clipboard.writeText("sbolivaravila16@gmail.com");
     e.target.textContent = "✓";
     setTimeout(() => { e.target.textContent = I18N[lang].btn_copy; }, 1600);
   });
+
+  // Direct collaboration form via FormSubmit + mailto fallback
+  const collabForm = document.getElementById("collabForm");
+  if (collabForm) {
+    collabForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById("collabSubmitBtn");
+      const statusEl = document.getElementById("formStatus");
+      const fallbackEl = document.getElementById("mailtoFallback");
+      const name = document.getElementById("collabName").value.trim();
+      const email = document.getElementById("collabEmail").value.trim();
+      const topic = document.getElementById("collabTopic").value;
+      const message = document.getElementById("collabMessage").value.trim();
+      const honey = collabForm.querySelector("[name='_honey']").value;
+      if (honey) return;
+
+      const mailtoHref = `mailto:sbolivaravila16@gmail.com?subject=${encodeURIComponent(`[Collaboration] ${topic} — ${name}`)}&body=${encodeURIComponent(`From: ${name} (${email})\nArea: ${topic}\n\n${message}`)}`;
+      if (fallbackEl) fallbackEl.href = mailtoHref;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = I18N[lang].sending;
+      statusEl.className = "form-status hidden";
+
+      try {
+        const resp = await fetch("https://formsubmit.co/ajax/sbolivaravila16@gmail.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            topic,
+            message,
+            _replyto: email,
+            _subject: `New Collaboration Inquiry (${topic}) — sbolivar16.github.io`,
+            _template: "table",
+          }),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok || data.success === "false") throw new Error("Submit failed");
+
+        statusEl.textContent = I18N[lang].sent_ok;
+        statusEl.className = "form-status success";
+        collabForm.reset();
+      } catch {
+        statusEl.textContent = I18N[lang].sent_err;
+        statusEl.className = "form-status error";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = I18N[lang].btn_send;
+      }
+    });
+  }
 
   // Modal controls
   const closeModal = () => document.getElementById("bibModal").classList.add("hidden");
