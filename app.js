@@ -183,8 +183,19 @@ const PIPELINE_STAGES = [
 
 const REPOS_FALLBACK = [
   {
+    name: "KhemSAR",
+    category: "qsar",
+    categories: ["qsar", "docking", "chem"],
+    stars: 0,
+    forks: 0,
+    language: "Python",
+    description: "Cross-platform, multilingual (ES/EN/PT) AI-assisted QSAR/SAR modeling, scientific tutoring, bioisosteric de novo design, and 3D docking preparation platform.",
+    url: "https://github.com/Sbolivar16/KhemSAR",
+  },
+  {
     name: "MolecularDocking",
     category: "docking",
+    categories: ["docking"],
     stars: 32,
     forks: 8,
     language: "Jupyter Notebook",
@@ -328,7 +339,10 @@ function renderStageDetail() {
 
 function renderRepos() {
   const grid = document.getElementById("repoGrid");
-  const filtered = activeRepoFilter === "all" ? reposData : reposData.filter((r) => r.category === activeRepoFilter);
+  const filtered =
+    activeRepoFilter === "all"
+      ? reposData
+      : reposData.filter((r) => (r.categories ? r.categories.includes(activeRepoFilter) : r.category === activeRepoFilter));
   grid.innerHTML = filtered
     .map(
       (r) => `
@@ -382,9 +396,19 @@ function renderPubs() {
   });
 }
 
+function classifyRepoCategories(repo) {
+  const text = `${repo.name} ${repo.description || ""} ${(repo.topics || []).join(" ")}`.toLowerCase();
+  const cats = [];
+  if (/(dock|vina|gnina|pandadock|3d)/.test(text)) cats.push("docking");
+  if (/(gromacs|md|dynamics|mmpbsa|openmm|trajectory)/.test(text)) cats.push("md");
+  if (/(qsar|sar|admet|chembl|shap|screening|bioisoster)/.test(text)) cats.push("qsar");
+  if (/(cheminform|datamol|rdkit|openbabel|descriptor|chemical space)/.test(text)) cats.push("chem");
+  return cats.length ? cats : ["chem"];
+}
+
 async function hydrateGitHubStats() {
   try {
-    const res = await fetch("https://api.github.com/users/Sbolivar16/repos?per_page=100");
+    const res = await fetch("https://api.github.com/users/Sbolivar16/repos?per_page=100&sort=pushed");
     if (!res.ok) return;
     const live = await res.json();
     if (!Array.isArray(live)) return;
@@ -397,16 +421,38 @@ async function hydrateGitHubStats() {
       totalForks += r.forks_count || 0;
     });
 
-    reposData = reposData.map((r) => {
+    const excluded = new Set(["Sbolivar16", "Sbolivar16.github.io"]);
+    const knownNames = new Set(reposData.map((r) => r.name));
+
+    const updatedKnown = reposData.map((r) => {
       const m = map.get(r.name);
       if (!m) return r;
       return {
         ...r,
         stars: m.stargazers_count ?? r.stars,
         forks: m.forks_count ?? r.forks,
+        language: m.language || r.language,
         description: m.description || r.description,
       };
     });
+
+    const discovered = live
+      .filter((m) => !m.fork && !m.private && !excluded.has(m.name) && !knownNames.has(m.name))
+      .map((m) => {
+        const cats = classifyRepoCategories(m);
+        return {
+          name: m.name,
+          category: cats[0],
+          categories: cats,
+          stars: m.stargazers_count || 0,
+          forks: m.forks_count || 0,
+          language: m.language || "Python",
+          description: m.description || "Open-source computational chemistry & drug discovery repository.",
+          url: m.html_url,
+        };
+      });
+
+    reposData = [...discovered, ...updatedKnown];
 
     document.getElementById("statStars").textContent = String(totalStars);
     document.getElementById("statForks").textContent = String(totalForks);
